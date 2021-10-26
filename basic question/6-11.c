@@ -20,19 +20,42 @@ int main ()
 
 /* 你的代码将被嵌在这里 */
 
-//冒泡排序
-ElementType Median( ElementType A[], int N ){
-    for(int i = 0; i < N - 1; i++){
-        for(int j = 0; j < N - i - 1; j++){
-            if(A[j] >= A[j + 1]){
-            ElementType temp = A[j];
-            A[j] = A[j + 1];
-            A[j + 1] = temp;
-            }
-        }
-    }
+//快速排序
+void swap(ElementType *a, ElementType *b){
+    ElementType c = *a;
+    *a = *b;
+    *b = c;
+}
 
-    
-    if(N % 2 == 1) return A[(N - 1) / 2];
-    else return A[(N + 1) / 2];
+int partition(ElementType *arr, int low, int high){
+    int i = low - 1;
+    int j = high;
+    int temp = arr[high];
+    while(1){
+        while(arr[++i] < temp);
+        while(arr[--j] > temp);
+        if(i < j) swap(&arr[i], &arr[j]);
+        else
+            break;
+    } 
+    swap(&arr[i], &arr[high]);
+    return i;
+}
+
+void qsort(ElementType *arr, int low, int high){
+    int mid = partition(arr ,low, high);
+    qsort(arr, low, mid - 1);
+    qsort(arr, mid + 1, high);
+}
+
+void quik_sort(ElementType *arr, int n){
+     qsort(arr, 0, n - 1);
+}
+
+
+
+ElementType Median( ElementType arr[], int n ){
+    quik_sort(arr, n);
+    if(n % 2 == 1) return arr[(n - 1) / 2];
+    else return arr[(n + 1) / 2];
 }
